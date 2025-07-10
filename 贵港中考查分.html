@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵港市2025年中考查分系统</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e63b0 0%, #0d47a1 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #0d47a1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .header .domain {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #0d47a1;
+            font-size: 1.2rem;
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .form-section, .result-section {
+            display: block;
+        }
+        
+        .result-section {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #1e63b0;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #1e63b0;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(30, 99, 176, 0.2);
+        }
+        
+        .captcha-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .captcha-container input {
+            flex: 1;
+        }
+        
+        .captcha-img {
+            height: 50px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            background: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #0d47a1;
+            min-width: 100px;
+        }
+        
+        button {
+            background: #1e63b0;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #0d47a1;
+        }
+        
+        .back-btn {
+            background: #607d8b;
+        }
+        
+        .back-btn:hover {
+            background: #455a64;
+        }
+        
+        .student-info {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .student-info p {
+            margin: 8px 0;
+        }
+        
+        .scores-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scores-table th, .scores-table td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+        
+        .scores-table th {
+            background: #0d47a1;
+            color: white;
+        }
+        
+        .scores-table tr:nth-child(even) {
+            background: #f5f9ff;
+        }
+        
+        .scores-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .total-row {
+            background: #e3f2fd !important;
+            font-weight: bold;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .notice {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .notice h3 {
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+        
+        .notice ul {
+            padding-left: 20px;
+        }
+        
+        .notice li {
+            margin-bottom: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #777;
+            font-size: 0.8rem;
+            background: #f5f5f5;
+        }
+        
+        /* 等级颜色标记 */
+        .grade-Aplus { color: #d32f2f; font-weight: bold; }
+        .grade-A { color: #f57c00; font-weight: bold; }
+        .grade-Bplus { color: #689f38; font-weight: bold; }
+        .grade-B { color: #0288d1; font-weight: bold; }
+        .grade-Cplus { color: #7b1fa2; font-weight: bold; }
+        .grade-C { color: #455a64; font-weight: bold; }
+        .grade-D { color: #5d4037; }
+        .grade-E { color: #78909c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">贵</div>
+            <h1>贵港市2025年中考查分系统</h1>
+            <div class="domain">guigangshijiaoyujv</div>
+        </div>
+        
+        <div class="content">
+            <!-- 查询表单部分 -->
+            <div class="form-section" id="formSection">
+                <div class="form-group">
+                    <label for="name">考生姓名</label>
+                    <input type="text" id="name" placeholder="请输入考生姓名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="examNumber">准考证号</label>
+                    <input type="text" id="examNumber" placeholder="请输入准考证号" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="idCard">身份证号</label>
+                    <input type="text" id="idCard" placeholder="请输入身份证号" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="captcha">验证码</label>
+                    <div class="captcha-container">
+                        <input type="text" id="captcha" placeholder="请输入验证码" required>
+                        <div class="captcha-img" id="captchaImg" onclick="generateCaptcha()"></div>
+                    </div>
+                </div>
+                
+                <button onclick="queryScore()">查询成绩</button>
+                
+                <div class="notice">
+                    <h3>重要通知</h3>
+                    <ul>
+                        <li>成绩查询时间：2025年7月10日9:00至7月25日18:00</li>
+                        <li>成绩复核时间：2025年7月11日-7月15日（工作日）</li>
+                        <li>咨询电话：0775-1234567（贵港市招生考试院）</li>
+                        <li>系统域名：guigangshijiaoyujv</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 成绩结果部分 -->
+            <div class="result-section" id="resultSection">
+                <div class="student-info" id="studentInfo">
+                    <!-- 学生信息将通过JS动态填充 -->
+                </div>
+                
+                <table class="scores-table" id="scoresTable">
+                    <thead>
+                        <tr>
+                            <th>科目</th>
+                            <th>成绩</th>
+                            <th>等级</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 成绩信息将通过JS动态填充 -->
+                    </tbody>
+                </table>
+                
+                <div class="actions">
+                    <button class="back-btn" onclick="backToForm()">返回查询</button>
+                    <button onclick="window.print()">打印成绩单</button>
+                </div>
+                
+                <div class="notice">
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>成绩复核需携带准考证、身份证原件到贵港市招生考试院办理</li>
+                        <li>复核申请截止时间：2025年7月15日17:00</li>
+                        <li>最终成绩以贵港市教育局正式通知为准</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 贵港市教育局 版权所有</p>
+            <p>系统生成时间：<span id="currentTime"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 生成验证码
+            generateCaptcha();
+            
+            // 显示当前时间
+            updateCurrentTime();
+            
+            // 每10秒更新一次时间
+            setInterval(updateCurrentTime, 10000);
+        });
+        
+        // 生成验证码
+        function generateCaptcha() {
+            const captchaImg = document.getElementById('captchaImg');
+            // 生成4位随机数字验证码
+            const captcha = Math.floor(1000 + Math.random() * 9000).toString();
+            captchaImg.textContent = captcha;
+            captchaImg.dataset.captcha = captcha; // 存储真实验证码
+        }
+        
+        // 更新当前时间
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.getFullYear() + '年' + 
+                             (now.getMonth() + 1).toString().padStart(2, '0') + '月' + 
+                             now.getDate().toString().padStart(2, '0') + '日 ' + 
+                             now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        // 查询成绩
+        function queryScore() {
+            const name = document.getElementById('name').value;
+            const examNumber = document.getElementById('examNumber').value;
+            const idCard = document.getElementById('idCard').value;
+            const captchaInput = document.getElementById('captcha').value;
+            const realCaptcha = document.getElementById('captchaImg').dataset.captcha;
+            
+            // 验证表单
+            if (!name || !examNumber || !idCard || !captchaInput) {
+                alert('请填写完整信息');
+                return;
+            }
+            
+            // 验证码校验
+            if (captchaInput !== realCaptcha) {
+                alert('验证码错误，请重新输入');
+                generateCaptcha();
+                return;
+            }
+            
+            // 显示成绩部分
+            showResult(name, examNumber, idCard);
+        }
+        
+        // 显示成绩结果
+        function showResult(name, examNumber, idCard) {
+            // 更新学生信息
+            document.getElementById('studentInfo').innerHTML = `
+                <p><strong>考生姓名：</strong>${name}</p>
+                <p><strong>准考证号：</strong>${examNumber}</p>
+                <p><strong>身份证号：</strong>${idCard.replace(/^(\d{4})\d+(\d{4})$/, '$1********$2')}</p>
+            `;
+            
+            // 生成成绩表格
+            const subjects = [
+                { name: '语文', max: 120 },
+                { name: '数学', max: 120 },
+                { name: '英语', max: 120 },
+                { name: '物理', max: 100 },
+                { name: '化学', max: 100 },
+                { name: '道德与法治', max: 75 },
+                { name: '历史', max: 75 },
+                { name: '地理', max: 60 },
+                { name: '生物', max: 60 }
+            ];
+            
+            let totalScore = 0;
+            let tableBody = '';
+            
+            subjects.forEach(subject => {
+                // 生成随机成绩（在合理范围内）
+                const score = Math.floor(Math.random() * (subject.max * 0.5)) + Math.floor(subject.max * 0.5);
+                const grade = calculateGrade(score, subject.max);
+                totalScore += score;
+                
+                tableBody += `
+                    <tr>
+                        <td>${subject.name}</td>
+                        <td>${score}</td>
+                        <td class="grade-${grade.replace('+', 'plus')}">${grade}</td>
+                    </tr>
+                `;
+            });
+            
+            // 计算总等级
+            const totalGrade = calculateGrade(totalScore, subjects.reduce((sum, sub) => sum + sub.max, 0));
+            
+            // 添加总分行
+            tableBody += `
+                <tr class="total-row">
+                    <td>总分</td>
+                    <td>${totalScore}</td>
+                    <td class="grade-${totalGrade.replace('+', 'plus')}">${totalGrade}</td>
+                </tr>
+            `;
+            
+            document.querySelector('#scoresTable tbody').innerHTML = tableBody;
+            
+            // 切换到结果视图
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+        }
+        
+        // 根据分数计算等级（贵港市标准）
+        function calculateGrade(score, maxScore) {
+            const percentage = score / maxScore;
+            
+            // 贵港市等级划分标准
+            if (percentage >= 0.93) return 'A+';   // 前5%
+            if (percentage >= 0.77) return 'A';    // 前21%
+            if (percentage >= 0.56) return 'B+';   // 前42%
+            if (percentage >= 0.36) return 'B';    // 前62%
+            if (percentage >= 0.26) return 'C+';   // 前72%
+            if (percentage >= 0.12) return 'C';    // 前86%
+            if (percentage >= 0.05) return 'D';    // 前95%
+            return 'E';                            // 后5%
+        }
+        
+        // 返回查询表单
+        function backToForm() {
+            // 清空表单
+            document.getElementById('name').value = '';
+            document.getElementById('examNumber').value = '';
+            document.getElementById('idCard').value = '';
+            document.getElementById('captcha').value = '';
+            
+            // 生成新验证码
+            generateCaptcha();
+            
+            // 切换视图
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('formSection').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
